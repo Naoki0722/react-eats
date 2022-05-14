@@ -17,15 +17,15 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/restaurants" exact element={<Restaurants />} />
-        {/* <Route
+        <Route
           exact
           path="/restaurants/:restaurantsId/foods"
-          render={({ match }) => <Foods match={match} />}
-        /> */}
+          element={<Foods />}
+        />
         <Route
           exact
           path="/orders"
-          element={<Restaurants />} />
+          element={<Orders />} />
       </Routes>
     </>
   );

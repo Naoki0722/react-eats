@@ -14,7 +14,7 @@ import FoodImage from '../images/food-image.jpg';
 
 import { COLORS } from "../style_constants";
 import { LocalMalIcon } from "../components/Icons";
-import { useHistory, Link } from "react-router-dom";
+import { useNavigate, Link, useParams } from "react-router-dom";
 import { Skeleton } from "@material-ui/lab";
 import { FoodWrapper } from "../components/FoodWrapper";
 import { FoodOrderDialog } from "../components/FoodOrderDialog";
@@ -52,8 +52,9 @@ const ItemWrapper = styled.div`
 `;
 
 
-export const Foods = ({match}) => {
-  const history = useHistory();
+export const Foods = () => {
+  const { restaurantsId } = useParams();
+  const navigate = useNavigate();
   const [foodsState, dispatch] = useReducer(foodsReducer, foodsInitialState)
   const initialState = {
     isOpenOrderDialog: false,
@@ -70,19 +71,19 @@ export const Foods = ({match}) => {
       foodId: state.selectedFood.id,
       count: state.selectedFoodCount
     })
-    .then(() => history.push('/orders'))
+    .then(() => navigate("/orders", { replace: true }))
     .catch(e => {
-      if(e.response.statsus === HTTP_STATUS_CODE.NOT_ACCEPTABLE) {
-        setState({
-          ...state,
-          isOpenOrderDialog: false,
-          isOpenNewOrderDialog: true,
-          existingResutaurautName: e.response.data.existing_restaurant,
-          newResutaurautName: e.response.data.new_restaurant,
-        })
-      } else {
-        throw e;
-      }
+        if(e.response.status === HTTP_STATUS_CODE.NOT_ACCEPTABLE) {
+          setState({
+            ...state,
+            isOpenOrderDialog: false,
+            isOpenNewOrderDialog: true,
+            existingResutaurautName: e.response.data.existing_restaurant,
+            newResutaurautName: e.response.data.new_restaurant,
+          })
+        } else {
+          throw e;
+        }
     })
   }
 
@@ -90,12 +91,13 @@ export const Foods = ({match}) => {
     replaceLineFoods({
       foodId: state.selectedFood.id,
       count: state.selectedFoodCount,
-    }).then(() => history.push('/orders'))
+    }).then(() => navigate("/orders", { replace: true }))
+    .catch(e => console.log(e))
   };
 
   useEffect(() => {
     dispatch({type: foodsActionTyps.FETCHING})
-    fetchFoods(match.params.restaurantsId)
+    fetchFoods(restaurantsId)
     .then(data => {
       dispatch({
         type: foodsActionTyps.FETCH_SUCCESS,
@@ -105,7 +107,7 @@ export const Foods = ({match}) => {
       })
     })
     .catch(e => console.error(e))
-  },[match.params.restaurantsId])
+  },[restaurantsId])
   return (
     <>
       <HeaderWrapper>

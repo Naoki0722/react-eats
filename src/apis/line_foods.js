@@ -1,5 +1,5 @@
 import axios from "axios"
-import { lineFoods } from "../urls"
+import { lineFoods, lineFoodsReplace } from "../urls"
 
 
 export const postLineFoods = (params) => {
@@ -13,7 +13,7 @@ export const postLineFoods = (params) => {
 }
 
 export const replaceLineFoods = ({foodId,count}) => {
-  return axios.put(lineFoods, {
+  return axios.put(lineFoodsReplace, {
     food_id: foodId,
     count: count
   })

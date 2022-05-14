@@ -8,7 +8,7 @@ export const NewOrderConfirmDialog = ({
   existingResutaurautName,
   newResutaurautName,
   onClickSubmit
-}) => {
+}) => (
   <Dialog
     open={isOpen}
     onClose={onClose}
@@ -29,4 +29,4 @@ export const NewOrderConfirmDialog = ({
       </OrderButton>
     </DialogContent>
   </Dialog>
-}
+)
