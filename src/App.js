@@ -1,8 +1,7 @@
 import React from 'react';
 import './App.css';
 import {
-  BrowserRouter as Router,
-  Switch,
+  Routes,
   Route,
 } from "react-router-dom";
 
@@ -10,28 +9,25 @@ import {
 import { Restaurants } from './containers/Restaurants.jsx';
 import { Foods } from './containers/Foods.jsx';
 import { Orders } from './containers/Orders.jsx';
+import { Home } from './containers/Home';
 
 function App() {
   return (
-    <Router>
-      <Switch>
-        <Route
-          exact
-          path="/restaurants">
-          <Restaurants />
-        </Route>
+    <>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/restaurants" exact element={<Restaurants />} />
         <Route
           exact
           path="/restaurants/:restaurantsId/foods"
-          render={({ match }) => <Foods match={match} />}
+          element={<Foods />}
         />
         <Route
           exact
-          path="/orders">
-          <Orders />
-        </Route>
-      </Switch>
-    </Router>
+          path="/orders"
+          element={<Orders />} />
+      </Routes>
+    </>
   );
 }
 
